@@ -1,3 +1,3 @@
 class cuentacorriente:
-        #codigo
+  #codigo
     saldo=""
