@@ -1,49 +1,65 @@
 from cuentaahorros import cuentaahorro
 from cuentacorriente import cuentacorriente
-from cdt import cdt 
+from cdt import cdt
 
-class simuladorbancario:
-    #codigo
-    nombre=""
-    cedula=""
-    mesActual=""
-    """----------------------------------
-    Asociaciones
-    -------------------------------------"""
-    SaldoCuentaCorriente= cuentacorriente()
-    SaldoCuentaAhorros = cuentaahorro()
-    cdt= cdt()
-    SaldoTotal =""
-    """----------------------------------
-    Metodos
-    --------------------------------------"""
-
-    def ConsignarValor(self):
-        #aqui va el codigo
-        #valorConsignar + saldo= saldo
-        #return "su saldo ahora es de: "+saldo
-        return ""
+class SimuladorBancario:
     
-    def RetirarValor(self):
-        #aqui va el codigo
-        #valorRetirar - saldo= saldo
-        #return "su saldo ahora es de: "+saldo
-        return ""
+    cedula=''
+    nombres=''
+    mesActual=''
     
-    def InteresMensual(self):
-        #aqui va el codigo
-        return ""
+    '''----------------------------------------------------------------
+    # Asociaciones
+    ----------------------------------------------------------------'''
     
-
-    def ConsignarCuentaCorriente(self, dinero):
-        #aqui va el codigo
-        return"el valor a consignar es de: "+dinero 
-     
+    corriente = cuentacorriente()
+    ahorros = cuentaahorro()
+    cdt = cdt()
+    
+    '''----------------------------------------------------------------
+    # Metodos
+    ----------------------------------------------------------------'''
+    
+    def ConsignarCuentaCorriente(self, monto):
+        self.corriente.ConsignarMonto(monto)
+        
     def CalcularSaldoTotal(self):
-        #aqui va el codigo
-        SaldoTotal= self.SaldoCuentaAhorros + self.SaldoCuentaCorriente
-        return "SaldoTotal es: "+self.SaldoTotal
+        # Forma1
+        return self.corriente.ConsultarSaldo()+self.ahorros.ConsultarSaldo()
 
-    def TransferirSaldoCuentaCorrienteCuentaAhorro(self):
+        # #Forma2
+        # saldoAhorros = self.ahorros.ConsultarSaldo()
+        # saldoCorriente = self.corriente.ConsultarSaldo()
+        # return saldoAhorros+saldoCorriente
+        
+    def PasarAhorrosACorriente(self):
+        # forma1
+        # self.corriente.ConsignarMonto(self.ahorros.ConsultarSaldo())
+        # self.ahorros.RetirarMonto(self.ahorros.ConsultarSaldo())
+        
+        # forma 2
+        # saldoAhorros = self.ahorros.ConsultarSaldo()
+        # self.ConsignarCuentaCorriente(saldoAhorros)
+        # self.ahorros.RetirarMonto(self, saldoAhorros)
+        
+        #forma 3
+        saldoAhorros = self.ahorros.ConsultarSaldo()
+        self.corriente.saldo += saldoAhorros
+        self.ahorros.saldo = 0
+
+    def ConsultarSaldoCorriente(self):
+        return "tu saldo es: "+self.corriente.ConsultarSaldo()
+    
+    def DuplicarAhorro(self):
+        #forma 1
+        self.ahorros.ConsignarMonto(self.ahorros.ConsultarSaldo)
+        # #forma 2 
+        # self.ahorros.saldo *= 2
+
+    def RetirarTodo(self):
         #aqui va el codigo
-        return  
+        total= self.CalcularSaldoTotal()
+        self.corriente.RetirarMonto(self.corriente.ConsultarSaldo())
+        self.ahorros.RetirarMonto(self.ahorros.ConsultarSaldo())
+
+        return "retiraste total: "+total 
