@@ -90,3 +90,4 @@ class Empleado:
         return (total * 19.5) / 100 
         #forma 2
         #return self.CalcularSalarioAnual() * 0.195
+    
